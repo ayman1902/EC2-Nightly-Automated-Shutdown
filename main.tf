@@ -23,3 +23,8 @@ module "lambda" {
   instance_id = module.ec2.instance_id     # Pass your EC2 instance ID
   lambda_zip = "/home/ayman/terraform_eventb/lambda_python/lambda_function.zip"
 }
+module "eventbridge" {
+  source = "./modules/eventbridge"  # Path to your EventBridge module
+  lambda_function_arn = module.lambda.lambda_function_arn  # Pass the Lambda function ARN
+
+}

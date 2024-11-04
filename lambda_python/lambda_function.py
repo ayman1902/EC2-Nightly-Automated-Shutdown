@@ -14,3 +14,5 @@ def lambda_handler(event, context):
     elif action == 'start':
         print(f"Starting instance: {instance_id}")
         ec2_client.start_instances(InstanceIds=[instance_id])
+    else:
+        print("No action taken")
