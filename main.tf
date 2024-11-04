@@ -17,3 +17,9 @@ module "ec2" {
   instance_name  = var.instance_name
   availability_zone = var.availability_zone  # Pass this variable
 }
+#lambda function
+module "lambda" {
+  source     = "./modules/lambda"  # Path to your lambda module
+  instance_id = module.ec2.instance_id     # Pass your EC2 instance ID
+  lambda_zip = "/home/ayman/terraform_eventb/lambda_python/lambda_function.zip"
+}
