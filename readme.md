@@ -1,6 +1,6 @@
 # EC2 Nightly Automated Shutdown
 
-![Architecture Diagram]("/home/ayman/terraform_eventb/images/diagram-export-04-11-2024-02_29_26.png")
+![Architecture Diagram]("images/diagram-export-04-11-2024-02_29_26.png")
 ## Overview
 
 This project automates the nightly shutdown of EC2 instances using AWS Lambda and EventBridge, all provisioned with Terraform. The system is designed to:
