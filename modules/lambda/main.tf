@@ -26,6 +26,7 @@ resource "aws_iam_policy" "lambda_ec2_policy" {
         Action = [
           "ec2:StopInstances",
           "ec2:StartInstances",
+          
         ],
         Resource = "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:instance/${var.instance_id}"
       }
@@ -37,6 +38,7 @@ resource "aws_iam_role_policy_attachment" "lambda_ec2_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.lambda_ec2_policy.arn
 }
+
 
 resource "aws_lambda_function" "ec2_control" {
   function_name = "ec2_control_function"
@@ -52,4 +54,45 @@ resource "aws_lambda_function" "ec2_control" {
       INSTANCE_ID = var.instance_id  # Use this syntax to define environment variables
     }
   }
+}
+# Define the Lambda execution role
+resource "aws_iam_role" "lambda_exec_role" {
+  name               = "lambda_exec_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# Policy for Lambda logging permissions
+resource "aws_iam_policy" "lambda_logging_policy" {
+  name   = "LambdaLoggingPolicy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Attach the logging policy to the Lambda execution role
+resource "aws_iam_role_policy_attachment" "lambda_logging" {
+  role       = aws_iam_role.lambda_exec_role.name
+  policy_arn = aws_iam_policy.lambda_logging_policy.arn
 }
