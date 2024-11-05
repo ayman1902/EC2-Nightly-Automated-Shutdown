@@ -11,3 +11,7 @@ variable "lambda_zip" {
   description = "Path to the Lambda function ZIP file"
   type        = string
 }
+variable "sns_topic_arn" {
+  description = "The ARN of the SNS topic for EC2 state change notifications"
+  type        = string
+}

@@ -4,6 +4,7 @@ resource "aws_cloudwatch_event_rule" "stop_ec2" {
   name        = "StopEC2EventRule"
   description = "Trigger Lambda function to stop EC2 instance"
   schedule_expression = "cron(14 1 * * ? *)"  # This triggers at 01:52 every day
+
 }
 
 resource "aws_cloudwatch_event_rule" "start_ec2" {
@@ -21,6 +22,7 @@ resource "aws_cloudwatch_event_target" "stop_ec2_target" {
         "action": "stop"
     }
 })  # Pass the action
+
 }
 
 resource "aws_cloudwatch_event_target" "start_ec2_target" {
